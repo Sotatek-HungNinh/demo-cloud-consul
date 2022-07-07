@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: websocket
+  cloud:
+    consul:
+      discovery:
+        hostname: websocket
+        instanceId: websocket
+        health-check-path: /actuator/health
+      host: localhost
+      port: 8500
+      enabled: true
+server:
+  port: 8085

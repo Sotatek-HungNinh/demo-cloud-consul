@@ -1,0 +1,39 @@
+hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: 2000
+server:
+  port: 8080
+spring:
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+    consul:
+      discovery:
+        hostname: gateway
+        instanceId: gateway
+        health-check-path: /actuator/health
+        prefer-ip-address: true
+      host: localhost
+      port: 8500
+      enabled: true
+  redis:
+    port: 6382
+    host: localhost
+    database: 1
+  main:
+    web-application-type: reactive
+    allow-bean-definition-overriding: true
+  application:
+    name: gateway
+debug: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+

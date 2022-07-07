@@ -1,0 +1,12 @@
+server:
+  port: 8082
+spring:
+  cloud:
+    consul:
+      discovery:
+        hostname: teacher
+        instanceId: teacher
+        health-check-path: /actuator/health
+      host: localhost
+      port: 8500
+      enabled: true
