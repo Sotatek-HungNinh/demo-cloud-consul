@@ -24,43 +24,43 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-@Configuration
-public class GatewayConfig {
-
-    private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Content-Length, Authorization, credential, X-XSRF-TOKEN";
-    private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS, PATCH";
-    private static final String ALLOWED_ORIGIN = "http://localhost:3000";
-    private static final String MAX_AGE = "7200"; //2 hours (2 * 60 * 60)
-
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
-    }
-    @Bean
-    public RouteLocator myRoutes(RouteLocatorBuilder routeLocatorBuilder) {
-        return routeLocatorBuilder.routes()
-                .route(r -> r.path("/api/v1/student/**")
-                        .filters(f -> f.rewritePath("/api/v1/student/(?<remains>.*)", "/${remains}")
-                                .addRequestHeader("X-first-Header", "first-service-header"))
-                        .uri("lb://STUDENT/"))
-                .route(r -> r.path("/websocket/**")
-                        .filters(f -> f.rewritePath("/websocket/(?<remains>.*)", "/${remains}"))
-                        .uri("lb://WEBSOCKET/"))
-                .route(r -> r.path("/api/v1/teacher/**")
-                        .filters(f -> f.rewritePath("/api/v1/second/(?<remains>.*)", "/${remains}"))
-                        .uri("lb://TEACHER/"))
-                .build();
-    }
-
-    @Bean
-    public RedisRateLimiter redisRateLimiter() {
-        return new RedisRateLimiter(5, 10);
-    }
-
-    @Bean
-    KeyResolver userKeyResolver() {
-        return exchange -> Mono.just("1");
-    }
+//@Configuration
+//public class GatewayConfig {
+//
+//    private static final String ALLOWED_HEADERS = "x-requested-with, authorization, Content-Type, Content-Length, Authorization, credential, X-XSRF-TOKEN";
+//    private static final String ALLOWED_METHODS = "GET, PUT, POST, DELETE, OPTIONS, PATCH";
+//    private static final String ALLOWED_ORIGIN = "http://localhost:3000";
+//    private static final String MAX_AGE = "7200"; //2 hours (2 * 60 * 60)
+//
+//    @Bean
+//    public LettuceConnectionFactory redisConnectionFactory() {
+//        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
+//    }
+//    @Bean
+//    public RouteLocator myRoutes(RouteLocatorBuilder routeLocatorBuilder) {
+//        return routeLocatorBuilder.routes()
+//                .route(r -> r.path("/api/v1/student/**")
+//                        .filters(f -> f.rewritePath("/api/v1/student/(?<remains>.*)", "/${remains}")
+//                                .addRequestHeader("X-first-Header", "first-service-header"))
+//                        .uri("lb://STUDENT/"))
+//                .route(r -> r.path("/websocket/**")
+//                        .filters(f -> f.rewritePath("/websocket/(?<remains>.*)", "/${remains}"))
+//                        .uri("wss://mainnet.infura.io/"))
+//                .route(r -> r.path("/api/v1/teacher/**")
+//                        .filters(f -> f.rewritePath("/api/v1/second/(?<remains>.*)", "/${remains}"))
+//                        .uri("lb://TEACHER/"))
+//                .build();
+//    }
+//
+//    @Bean
+//    public RedisRateLimiter redisRateLimiter() {
+//        return new RedisRateLimiter(5, 10);
+//    }
+//
+//    @Bean
+//    KeyResolver userKeyResolver() {
+//        return exchange -> Mono.just("1");
+//    }
 
 //    @Bean
 //    CorsConfigurationSource corsConfigurationSource() {
@@ -105,4 +105,4 @@ public class GatewayConfig {
 //            return chain.filter(ctx);
 //        };
 //    }
-}
+//}
