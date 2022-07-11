@@ -9,10 +9,10 @@ import org.springframework.core.env.Environment;
 
 public class WeightedLoadBalancerConfiguration {
   @Bean
-  ReactorLoadBalancer<ServiceInstance> randomLoadBalancer(Environment environment,
+  ReactorLoadBalancer<ServiceInstance> createLoadBalancer(Environment environment,
       LoadBalancerClientFactory loadBalancerClientFactory) {
     String name = environment.getProperty(LoadBalancerClientFactory.PROPERTY_NAME);
-    return new WeightedLoadBalancer(loadBalancerClientFactory .getLazyProvider(name, ServiceInstanceListSupplier.class),
+    return new WeightedLoadBalancer(loadBalancerClientFactory.getLazyProvider(name, ServiceInstanceListSupplier.class),
         name);
   }
 }
