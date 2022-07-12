@@ -7,6 +7,8 @@ spring:
       ribbon:
         enabled: false
     gateway:
+      default-filters:
+        - name: RequestRateLimiter
       discovery:
         locator:
           enabled: true

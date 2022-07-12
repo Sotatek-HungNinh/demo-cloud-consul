@@ -40,6 +40,11 @@ public class WeightedLoadBalancer implements ReactorServiceInstanceLoadBalancer 
     List<ServiceInstance> healthyInstances = instances.stream().filter((this::isHealthyInstance))
         .collect(Collectors.toList());
 
+    if (healthyInstances.isEmpty()) {
+      // if all instances are unhealthy, we'll forward traffic to all instances
+      healthyInstances = instances;
+    }
+
     int size = healthyInstances.stream().map(this::getInstanceWeight).reduce(0, Integer::sum);
 
     int index = ThreadLocalRandom.current().nextInt(size);
@@ -70,7 +75,7 @@ public class WeightedLoadBalancer implements ReactorServiceInstanceLoadBalancer 
   private int getInstanceWeight(ServiceInstance instance) {
     String weight = instance.getMetadata().get("weight");
     try {
-      return Integer.valueOf(weight);
+      return Integer.parseInt(weight);
     }
     catch (NumberFormatException ex){
       // TODO warning "Invalid weight {weight}"
